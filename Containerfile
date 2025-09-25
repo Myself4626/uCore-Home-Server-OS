@@ -31,6 +31,24 @@ RUN git clone https://github.com/automorphism88/snapraid-btrfs.git && ls -la sna
 #RUN sudo dnf5 install -y https://github.com/45Drives/cockpit-benchmark/releases/download/v2.1.1/cockpit-benchmark-2.1.1-1.el8.noarch.rpm \
 #    && dnf5 clean all
 
+
+ENV SOPS_VERSION="v3.10.2"
+ARG SOPS_FILENAME="sops-${SOPS_VERSION}.${TARGETOS}.${TARGETARCH}"
+RUN set -x && \
+    curl --retry 5 --retry-connrefused -LO "https://github.com/getsops/sops/releases/download/${SOPS_VERSION}/${SOPS_FILENAME}" && \
+    chmod +x "${SOPS_FILENAME}" && \
+    mv "${SOPS_FILENAME}" /usr/local/bin/sops && \
+    sops --version --disable-version-check | grep -E "^sops ${SOPS_VERSION#v}"
+
+ENV AGE_VERSION="v1.2.1"
+ARG AGE_FILENAME="age-${AGE_VERSION}-${TARGETOS}-${TARGETARCH}.tar.gz"
+RUN set -x && \
+    curl --retry 5 --retry-connrefused -LO "https://github.com/FiloSottile/age/releases/download/${AGE_VERSION}/${AGE_FILENAME}" && \
+    tar xvf "${AGE_FILENAME}" -C /usr/local/bin --strip-components 1 age/age age/age-keygen && \
+    rm "${AGE_FILENAME}" && \
+    [ "$(age --version)" = "${AGE_VERSION}" ] && \
+    [ "$(age-keygen --version)" = "${AGE_VERSION}" ]
+
 RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     --mount=type=cache,dst=/var/cache \
     --mount=type=cache,dst=/var/log \
