@@ -1,7 +1,7 @@
 # uCore Home Server OS (uHS-OS)
 [![uCore Base](https://img.shields.io/badge/Base-uCore-orange)](https://github.com/ublue-os/ucore)
 [![Build Status](https://img.shields.io/badge/Build-bootc-green)](#)
-[![Build Status](https://github.com/Myself4626/uCore-Home-Server/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/Myself4626/uCore-Home-Server/actions/workflows/build.yml)
+[![Build Status](https://github.com/Myself4626/uCore-Home-Server-OS/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/Myself4626/uCore-Home-Server-OS/actions/workflows/build.yml)
 
 > ⚠️ **Warning:** Early stage. Features may change or be missing. Backups recommended.
 
