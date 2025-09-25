@@ -5,8 +5,9 @@
 
 > ⚠️ **Warning:** Early stage. Features may change or be missing. Backups recommended.
 
-**A modern home-server OS**  
-uHS-OS is an immutable uBlue/uCore home server OS. It follows a container-first model aligned with [PerfectMediaServer](https://perfectmediaserver.com/) principles. The goal is to keep the host minimal, updates atomic, and services reproducible.
+---
+
+**uHS-OS** is an immutable uBlue-uCore home server OS. It follows a container-first model aligned with [PerfectMediaServer](https://perfectmediaserver.com/) principles. The goal is to keep the host minimal, updates atomic, and services reproducible.
 
 ---
 
