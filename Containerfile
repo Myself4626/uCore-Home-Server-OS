@@ -34,6 +34,9 @@ RUN git clone https://github.com/automorphism88/snapraid-btrfs.git && ls -la sna
 ENV SOPS_VERSION="v3.10.2"
 ARG SOPS_FILENAME="sops-${SOPS_VERSION}.linux.amd64"
 RUN set -x && \
+    ls /usr/ && \
+    ls /usr/local/ && \
+    ls /usr/local/bin/ && \
     curl --retry 5 --retry-connrefused -LO "https://github.com/getsops/sops/releases/download/${SOPS_VERSION}/${SOPS_FILENAME}" && \
     chmod +x "${SOPS_FILENAME}" && \
     mv "${SOPS_FILENAME}" /usr/local/bin/sops && \
