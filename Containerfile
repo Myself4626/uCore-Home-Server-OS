@@ -36,14 +36,14 @@ ARG SOPS_FILENAME="sops-${SOPS_VERSION}.linux.amd64"
 RUN set -x && \
     curl --retry 5 --retry-connrefused -LO "https://github.com/getsops/sops/releases/download/${SOPS_VERSION}/${SOPS_FILENAME}" && \
     chmod +x "${SOPS_FILENAME}" && \
-    mv "${SOPS_FILENAME}" /usr/local/bin/sops && \
+    mv "${SOPS_FILENAME}" /usr/bin/sops && \
     sops --version
 
 ENV AGE_VERSION="v1.2.1"
 ARG AGE_FILENAME="age-${AGE_VERSION}-linux-amd64.tar.gz"
 RUN set -x && \
     curl --retry 5 --retry-connrefused -LO "https://github.com/FiloSottile/age/releases/download/${AGE_VERSION}/${AGE_FILENAME}" && \
-    tar xvf "${AGE_FILENAME}" -C /usr/local/bin --strip-components 1 age/age age/age-keygen && \
+    tar xvf "${AGE_FILENAME}" -C /usr/bin --strip-components 1 age/age age/age-keygen && \
     rm "${AGE_FILENAME}" && \
     [ "$(age --version)" = "${AGE_VERSION}" ] && \
     [ "$(age-keygen --version)" = "${AGE_VERSION}" ]
