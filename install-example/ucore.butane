@@ -1,0 +1,60 @@
+variant: fcos
+version: 1.6.0
+passwd:
+  users:
+    - name: core
+      ssh_authorized_keys:
+        - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJ8NmEYncnByvHbkQE/hVtlQNSUDf6HHpRhd0kWxw/ca"
+        - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDOFcsV2LsUWMuTFtBTmUUXDLRoAAeoy1Dvdqtj6Sula" 
+        - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBz6fVewHhLmZn0+M9nHDtZvYfxvORolPo8zwv87q+gd"
+      groups:
+        - wheel
+        - sudo
+      password_hash: $y$j9T$MultrCpJyEjauQ4M1Hks40$.C8Csrjy1Na/ePBQ5uzEN1LvV7nZXU2vMWSUNlh2Z98
+storage:
+  files:
+    - path: /etc/hostname
+      mode: 0644
+      contents:
+        inline: core
+  directories:
+    - path: /etc/ucore-autorebase
+      mode: 0754
+systemd:
+  units:
+    - name: ucore-unsigned-autorebase.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=uCore autorebase to unsigned OCI and reboot
+        ConditionPathExists=!/etc/ucore-autorebase/unverified
+        ConditionPathExists=!/etc/ucore-autorebase/signed
+        After=network-online.target
+        Wants=network-online.target
+        [Service]
+        Type=oneshot
+        StandardOutput=journal+console
+        ExecStart=/usr/bin/rpm-ostree rebase --bypass-driver ostree-unverified-registry:ghcr.io/myself4626/ucore-home-server-os:latest
+        ExecStart=/usr/bin/touch /etc/ucore-autorebase/unverified
+        ExecStart=/usr/bin/systemctl disable ucore-unsigned-autorebase.service
+        ExecStart=/usr/bin/systemctl reboot
+        [Install]
+        WantedBy=multi-user.target
+    - name: ucore-signed-autorebase.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=uCore autorebase to signed OCI and reboot
+        ConditionPathExists=/etc/ucore-autorebase/unverified
+        ConditionPathExists=!/etc/ucore-autorebase/signed
+        After=network-online.target
+        Wants=network-online.target
+        [Service]
+        Type=oneshot
+        StandardOutput=journal+console
+        ExecStart=/usr/bin/rpm-ostree rebase --bypass-driver ostree-image-signed:docker://ghcr.io/myself4626/ucore-home-server-os:latest
+        ExecStart=/usr/bin/touch /etc/ucore-autorebase/signed
+        ExecStart=/usr/bin/systemctl disable ucore-signed-autorebase.service
+        ExecStart=/usr/bin/systemctl reboot
+        [Install]
+        WantedBy=multi-user.target
