@@ -30,7 +30,11 @@ dnf -y remove \
     ignition \
     ignition-edge \
     cloud-init \
-    coreos-installer \ 
+    coreos-installer \
+    afterburn
+
+# Remove ggtk, does this break stuff?
+dnf -y remove \
     gtk3
 
 # Remove Ignition and Cloud-Init Support
