@@ -30,9 +30,7 @@ dnf -y remove \
     ignition \
     ignition-edge \
     cloud-init \
-    coreos-installer \
-    afterburn
-
+    coreos-installer
 
 # Remove Ignition and Cloud-Init Support
 dnf -y remove \
