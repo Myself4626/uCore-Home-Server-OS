@@ -33,9 +33,6 @@ dnf -y remove \
     coreos-installer \
     afterburn
 
-# Remove ggtk, does this break stuff?
-dnf -y remove \
-    gtk3
 
 # Remove Ignition and Cloud-Init Support
 dnf -y remove \
