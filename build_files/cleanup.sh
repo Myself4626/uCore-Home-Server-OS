@@ -12,6 +12,30 @@ log "Starting system cleanup"
 # Remove autostart files
 #rm /etc/skel/.config/autostart/steam.desktop
 
+# Remove any wifi support from base
+dnf -y remove \
+  atheros-firmware \
+  brcmfmac-firmware \
+  iwlegacy-firmware \
+  iwlwifi-dvm-firmware \
+  iwlwifi-mvm-firmware \
+  mt7xxx-firmware \
+  nxpwireless-firmware \
+  realtek-firmware \
+  tiwilink-firmware
+
+# Remove Ignition and Cloud-Init Support
+dnf -y remove \
+    zincati \
+    ignition \
+    ignition-edge \
+    cloud-init
+
+# Remove Ignition and Cloud-Init Support
+dnf -y remove \
+    docker-buildx \
+    docker-compose
+
 # Clean package manager cache
 dnf5 clean all
 
