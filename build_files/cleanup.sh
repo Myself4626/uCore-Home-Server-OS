@@ -29,12 +29,15 @@ dnf -y remove \
     zincati \
     ignition \
     ignition-edge \
-    cloud-init
+    cloud-init \
+    coreos-installer \ 
+    gtk3
 
 # Remove Ignition and Cloud-Init Support
 dnf -y remove \
     docker-buildx \
-    docker-compose
+    docker-compose \
+    toolbox
 
 # Clean package manager cache
 dnf5 clean all
