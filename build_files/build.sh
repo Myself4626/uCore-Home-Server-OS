@@ -3,10 +3,11 @@
 set -ouex pipefail
 
 #systemctl enable podman.socket
+# swap nfs-utils-coreos for full nfs-utils
+dnf -y swap nfs-utils-coreos nfs-utils
+
 # install packages
-dnf -y swap \
-    nfs-utils-coreos \
-    nfs-utils \
+dnf -y install \
     tmux \
     ansible \
     snapper \
