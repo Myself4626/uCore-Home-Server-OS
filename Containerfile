@@ -18,6 +18,7 @@ FROM ghcr.io/ublue-os/ucore-minimal:stable
 ## make modifications desired in your image and install packages by modifying the build.sh script
 ## the following RUN directive does all the things required to run "build.sh" as recommended.
 
+
 COPY system_files /
 
 WORKDIR /tmp
@@ -47,10 +48,12 @@ RUN set -x && \
     [ "$(age --version)" = "${AGE_VERSION}" ] && \
     [ "$(age-keygen --version)" = "${AGE_VERSION}" ]
 
-RUN --mount=type=cache,dst=/var/cache/libdnf5 \
-    --mount=type=cache,dst=/var/cache/rpm-ostree \
-    --mount=type=bind,from=ctx,src=/,dst=/ctx \
+RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
+    --mount=type=cache,dst=/var/cache \
+    --mount=type=cache,dst=/var/log \
+    --mount=type=tmpfs,dst=/tmp \
     /ctx/build.sh && \
     /ctx/cleanup.sh
 
 RUN ["bootc", "container", "lint"]
+
