@@ -39,12 +39,12 @@ dnf -y install \
     virt-install
 
 # install packages direct from github
-if [[ "${RELEASE}" -ge "43" ]]; then
+#if [[ "${RELEASE}" -ge "43" ]]; then
   /ctx/github-release-install.sh trapexit/mergerfs "fc${RELEASE}.${ARCH}"
-elif [[ "${ARCH}" == "x86_64" ]]; then
-  # before F43, mergerfs only available for x86_64
-  /ctx/github-release-install.sh trapexit/mergerfs "fc${RELEASE}.x86_64"
-fi
+#elif [[ "${ARCH}" == "x86_64" ]]; then
+#  # before F43, mergerfs only available for x86_64
+#  /ctx/github-release-install.sh trapexit/mergerfs "fc${RELEASE}.x86_64"
+#fi
 
 # cockpit plugin for ZFS management
 curl --fail --retry 15 --retry-all-errors -sSL -o /tmp/cockpit-zfs-manager-api.json \
