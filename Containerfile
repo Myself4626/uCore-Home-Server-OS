@@ -30,7 +30,7 @@ RUN git clone https://github.com/automorphism88/snapraid-btrfs.git && ls -la sna
 #RUN sudo dnf5 install -y https://github.com/45Drives/cockpit-benchmark/releases/download/v2.1.1/cockpit-benchmark-2.1.1-1.el8.noarch.rpm \
 #    && dnf5 clean all
 
-ENV SOPS_VERSION="v3.10.2"
+ENV SOPS_VERSION="v3.11.0"
 ARG SOPS_FILENAME="sops-${SOPS_VERSION}.linux.amd64"
 RUN set -x && \
     curl --retry 5 --retry-connrefused -LO "https://github.com/getsops/sops/releases/download/${SOPS_VERSION}/${SOPS_FILENAME}" && \
@@ -38,7 +38,7 @@ RUN set -x && \
     mv "${SOPS_FILENAME}" /usr/bin/sops && \
     sops --version
 
-ENV AGE_VERSION="v1.2.1"
+ENV AGE_VERSION="v1.3.1"
 ARG AGE_FILENAME="age-${AGE_VERSION}-linux-amd64.tar.gz"
 RUN set -x && \
     curl --retry 5 --retry-connrefused -LO "https://github.com/FiloSottile/age/releases/download/${AGE_VERSION}/${AGE_FILENAME}" && \

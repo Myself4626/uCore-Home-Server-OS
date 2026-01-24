@@ -4,7 +4,7 @@ set -ouex pipefail
 
 #systemctl enable podman.socket
 # install packages
-dnf -y swap 
+dnf -y swap \
     nfs-utils-coreos \
     nfs-utils \
     tmux \
