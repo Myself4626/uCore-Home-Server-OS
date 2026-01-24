@@ -9,28 +9,13 @@ log() {
 
 log "Starting system cleanup"
 
-# Remove autostart files
-#rm /etc/skel/.config/autostart/steam.desktop
-
-# Remove any wifi support from base
-dnf -y remove \
-  atheros-firmware \
-  brcmfmac-firmware \
-  iwlegacy-firmware \
-  iwlwifi-dvm-firmware \
-  iwlwifi-mvm-firmware \
-  mt7xxx-firmware \
-  nxpwireless-firmware \
-  realtek-firmware \
-  tiwilink-firmware
-
 # Remove Ignition and Cloud-Init Support
-dnf -y remove \
-    zincati \
-    ignition \
-    ignition-edge \
-    cloud-init \
-    coreos-installer
+#dnf -y remove \
+#    zincati \
+#    ignition \
+#    ignition-edge \
+#    cloud-init \
+#    coreos-installer
 
 # Remove Ignition and Cloud-Init Support
 dnf -y remove \
@@ -41,19 +26,25 @@ dnf -y remove \
 # Clean package manager cache
 dnf5 clean all
 
+
+# Clean boot files
+find /boot/ -maxdepth 1 -mindepth 1 -exec rm -fr {} \; || true
+
 # Clean temporary files
-rm -rf /tmp/*
+find /tmp/* -maxdepth 0 -type d \! -name rpms -exec rm -fr {} \; || true
 
 # Clean /var directory while preserving essential files
 find /var/* -maxdepth 0 -type d \! -name cache -exec rm -fr {} \;
 find /var/cache/* -maxdepth 0 -type d \! -name libdnf5 \! -name rpm-ostree -exec rm -fr {} \;
 
-# Restore and setup directories
-mkdir -p /var/tmp
-chmod -R 1777 /var/tmp
-
 # Commit and lint container
+# this currently fails on /usr/etc and /var/cache
+#bootc container lint
 ostree container commit
-bootc container lint
+
+# Restore and setup directories
+mkdir -p /var/tmp \
+&& chmod -R 1777 /var/tmp
 
 log "Cleanup completed"
+

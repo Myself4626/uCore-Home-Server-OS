@@ -2,23 +2,67 @@
 
 set -ouex pipefail
 
-### Install packages
-
-# Packages can be installed from any enabled yum repo on the image.
-# RPMfusion repos are available by default in ublue main images
-# List of rpmfusion packages can be found here:
-# https://mirrors.rpmfusion.org/mirrorlist?path=free/fedora/updates/39/x86_64/repoview/index.html&protocol=https&redirect=1
-
-# this installs a package from fedora repos
-dnf5 install -y tmux ansible snapper powertop yq zip unzip htop intel_gpu_top bolt
-
-# Use a COPR Example:
-#
-# dnf5 -y copr enable ublue-os/staging
-# dnf5 -y install package
-# Disable COPRs so they don't end up enabled on the final image:
-# dnf5 -y copr disable ublue-os/staging
-
-#### Example for enabling a System Unit File
-
 #systemctl enable podman.socket
+# install packages
+dnf -y swap 
+    nfs-utils-coreos \
+    nfs-utils \
+    tmux \
+    ansible \
+    snapper \
+    powertop \
+    yq \
+    zip \
+    unzip \
+    htop \
+    intel_gpu_top \
+    cockpit-storaged \
+    duperemove \
+    hdparm \
+    man-db \
+    pciutils \
+    pcp-zeroconf \
+    rclone \
+    samba \
+    samba-usershares \
+    sanoid \
+    smartctl \
+    snapraid \
+    usbutils \
+    xdg-dbus-proxy \
+    xdg-user-dirs \
+    cockpit-machines \
+    libvirt-client \
+    libvirt-daemon-kvm \
+    ublue-os-libvirt-workarounds \
+    virt-install
+
+# install packages direct from github
+if [[ "${RELEASE}" -ge "43" ]]; then
+  /ctx/github-release-install.sh trapexit/mergerfs "fc${RELEASE}.${ARCH}"
+elif [[ "${ARCH}" == "x86_64" ]]; then
+  # before F43, mergerfs only available for x86_64
+  /ctx/github-release-install.sh trapexit/mergerfs "fc${RELEASE}.x86_64"
+fi
+
+# cockpit plugin for ZFS management
+curl --fail --retry 15 --retry-all-errors -sSL -o /tmp/cockpit-zfs-manager-api.json \
+    "https://api.github.com/repos/45Drives/cockpit-zfs-manager/releases/latest"
+CZM_TGZ_URL=$(jq -r .tarball_url /tmp/cockpit-zfs-manager-api.json)
+curl --fail --retry 15 --retry-all-errors -sSL -o /tmp/cockpit-zfs-manager.tar.gz "${CZM_TGZ_URL}"
+
+mkdir -p /tmp/cockpit-zfs-manager
+tar -zxvf /tmp/cockpit-zfs-manager.tar.gz -C /tmp/cockpit-zfs-manager --strip-components=1
+mv /tmp/cockpit-zfs-manager/polkit-1/actions/* /usr/share/polkit-1/actions/
+mv /tmp/cockpit-zfs-manager/polkit-1/rules.d/* /usr/share/polkit-1/rules.d/
+mv /tmp/cockpit-zfs-manager/zfs /usr/share/cockpit
+
+curl --fail --retry 15 --retry-all-errors -sSL -o /tmp/cockpit-zfs-manager-font-fix.sh \
+    https://raw.githubusercontent.com/45Drives/scripts/refs/heads/main/cockpit_font_fix/fix-cockpit.sh
+chmod +x /tmp/cockpit-zfs-manager-font-fix.sh
+/tmp/cockpit-zfs-manager-font-fix.sh
+
+rm -rf /tmp/cockpit-zfs-manager*
+
+# tweak os-release
+sed -i '/^PRETTY_NAME/s/(uCore.*$/(uCore MOD)"/' /usr/lib/os-release

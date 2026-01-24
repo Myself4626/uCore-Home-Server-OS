@@ -3,7 +3,7 @@ FROM scratch AS ctx
 COPY build_files /
 
 # Base Image
-FROM ghcr.io/ublue-os/ucore-hci:stable
+FROM ghcr.io/ublue-os/ucore-minimal:stable
 
 ## Other possible base images include:
 # FROM ghcr.io/ublue-os/bazzite:latest
@@ -54,3 +54,5 @@ RUN --mount=type=bind,from=ctx,source=/,target=/ctx \
     --mount=type=tmpfs,dst=/tmp \
     /ctx/build.sh && \
     /ctx/cleanup.sh
+
+RUN ["bootc", "container", "lint"]
