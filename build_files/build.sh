@@ -40,7 +40,10 @@ dnf -y install \
 
 # install packages direct from github
 #if [[ "${RELEASE}" -ge "43" ]]; then
-  /ctx/github-release-install.sh trapexit/mergerfs "fc${RELEASE}.${ARCH}"
+#  /ctx/github-release-install.sh trapexit/mergerfs "fc${RELEASE}.${ARCH}"
+  /ctx/github-release-install.sh trapexit/mergerfs "fc43.x86_64"
+
+
 #elif [[ "${ARCH}" == "x86_64" ]]; then
 #  # before F43, mergerfs only available for x86_64
 #  /ctx/github-release-install.sh trapexit/mergerfs "fc${RELEASE}.x86_64"
