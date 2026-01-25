@@ -1,0 +1,10 @@
+[Unit]
+Description=Fix SSH authorized_keys SELinux context
+ConditionFirstBoot=yes
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/restorecon -R -v /var/roothome/.ssh
+
+[Install]
+WantedBy=multi-user.target

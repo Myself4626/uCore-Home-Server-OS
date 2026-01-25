@@ -10,12 +10,12 @@ log() {
 log "Starting system cleanup"
 
 # Remove Ignition and Cloud-Init Support
-#dnf -y remove \
-#    zincati \
-#    ignition \
-#    ignition-edge \
-#    cloud-init \
-#    coreos-installer
+dnf -y remove \
+    zincati \
+    ignition \
+    ignition-edge \
+    cloud-init \
+    coreos-installer
 
 # Remove Ignition and Cloud-Init Support
 dnf -y remove \
