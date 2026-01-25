@@ -20,6 +20,7 @@ FROM ghcr.io/ublue-os/ucore-minimal:stable
 
 
 COPY system_files /
+COPY system_files/usr/lib /usr/lib/
 
 WORKDIR /tmp
 
