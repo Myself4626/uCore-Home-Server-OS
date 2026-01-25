@@ -68,7 +68,7 @@ chmod +x /tmp/cockpit-zfs-manager-font-fix.sh
 
 rm -rf /tmp/cockpit-zfs-manager*
 
-#systemctl enable ucore-root-ssh-fix.service
+systemctl enable ucore-root-ssh-fix.service
 
 # tweak os-release
 sed -i '/^PRETTY_NAME/s/(uCore.*$/(uCore MOD)"/' /usr/lib/os-release
